@@ -4,28 +4,35 @@ import { motion } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { ParallaxProvider, Parallax } from "react-scroll-parallax"
 import { useInView } from "react-intersection-observer"
-import profile from '../assets/gaurav.jpg'
 import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
-  FaAws,
-  FaDocker,
-  FaPython,
-  FaJava,
   FaCode,
-  FaCloud,
   FaLayerGroup,
   FaReact,
   FaNodeJs,
   FaDatabase,
   FaGraduationCap,
-  FaSchool,
   FaUniversity,
   FaMedal,
   FaCertificate,
-  FaLaptopCode,
 } from "react-icons/fa"
+
+import profile from '../assets/gaurav.jpg'
+// import profile from '../assets/img/Gaurav.png'
+import beacon from '../assets/img/beacon-Academy.png'
+import mobile from '../assets/img/ashish-mobile.png'
+import cheap from '../assets/img/cheap-book.png'
+import durgesh from '../assets/img/durgesh-furniture.png'
+import fortune from '../assets/img/fortune.png'
+import madhuprem from '../assets/img/madhuprem.png'
+import omsai from '../assets/img/om-sai.png'
+import shinde from '../assets/img/shinde.png'
+import shiv from '../assets/img/shiv-shakti.png'
+import ss from '../assets/img/ss-computer.png'
+import port from '../assets/img/port.png'
+
 
 
 
@@ -43,6 +50,23 @@ const throttle = (func, limit) => {
 
 // Background Particles Component
 const BackgroundParticles = ({ count = 15 }) => {
+  const [dimensions, setDimensions] = useState({
+    width: typeof window !== "undefined" ? window.innerWidth : 1200,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  })
+
+  useEffect(() => {
+    const handleResize = throttle(() => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }, 200)
+
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(count)].map((_, i) => (
@@ -50,19 +74,13 @@ const BackgroundParticles = ({ count = 15 }) => {
           key={i}
           className="absolute w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
           initial={{
-            x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 0),
-            y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 0),
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             scale: 0,
           }}
           animate={{
-            x: [
-              Math.random() * (typeof window !== "undefined" ? window.innerWidth : 0),
-              Math.random() * (typeof window !== "undefined" ? window.innerWidth : 0),
-            ],
-            y: [
-              Math.random() * (typeof window !== "undefined" ? window.innerHeight : 0),
-              Math.random() * (typeof window !== "undefined" ? window.innerHeight : 0),
-            ],
+            x: [Math.random() * dimensions.width, Math.random() * dimensions.width],
+            y: [Math.random() * dimensions.height, Math.random() * dimensions.height],
             scale: [1, 1.5, 1],
             opacity: [0.3, 0.7, 0.3],
           }}
@@ -87,12 +105,23 @@ const TimelineItem = ({ data, index }) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
+      initial={{ opacity: 0, x: 0, y: 50 }}
+      animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.2 }}
-      className={`flex ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"} items-center w-full`}
+      className="relative pl-8 sm:pl-0 mb-12 last:mb-0"
     >
-      <div className="w-1/2 px-4">
+      {/* Timeline line and dot (visible on all screens) */}
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-500 sm:left-1/2 sm:ml-[-0.5px]">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={inView ? { scale: 1 } : {}}
+          transition={{ delay: 0.3 }}
+          className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full border-2 border-white"
+        />
+      </div>
+
+      {/* Content container */}
+      <div className={`sm:w-1/2 ${index % 2 === 0 ? "sm:pr-8 sm:ml-auto" : "sm:pl-8"}`}>
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="bg-white/5 p-6 rounded-2xl backdrop-blur-lg border border-white/10
@@ -123,165 +152,210 @@ const TimelineItem = ({ data, index }) => {
           )}
         </motion.div>
       </div>
-      <div className="w-12 flex justify-center">
-        <div className="w-1 bg-gradient-to-b from-blue-500 to-purple-500 h-full relative">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={inView ? { scale: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                     w-4 h-4 bg-blue-500 rounded-full border-2 border-white"
-          />
-        </div>
-      </div>
-      <div className="w-1/2 px-4" />
     </motion.div>
   )
 }
 
 const Portfolio = () => {
-    const [activeSection, setActiveSection] = useState("home")
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-    const containerRef = useRef(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [cursorVariant, setCursorVariant] = useState("default")
-  
-    // Cursor variants
-    const cursorVariants = {
-      default: {
-        height: 32,
-        width: 32,
-        backgroundColor: "rgba(59, 130, 246, 0.5)",
-        x: mousePosition.x - 16,
-        y: mousePosition.y - 16,
-        mixBlendMode: "screen",
-      },
-      hover: {
-        height: 64,
-        width: 64,
-        backgroundColor: "rgba(59, 130, 246, 0.8)",
-        x: mousePosition.x - 32,
-        y: mousePosition.y - 32,
-      },
-    }
-  
-    // Mouse movement effect
-    useEffect(() => {
-      const handleMouseMove = throttle((e) => {
-        setMousePosition({ x: e.clientX, y: e.clientY })
-      }, 16)
-  
-      window.addEventListener("mousemove", handleMouseMove)
-      return () => window.removeEventListener("mousemove", handleMouseMove)
-    }, [])
-  
-    return (
-      <ParallaxProvider>
-        <div className="min-h-screen bg-gray-900 text-white relative">
-          {/* Navbar */}
-          <nav className="fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-white/10">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between h-16">
-                <motion.a
-                  href="#"
-                  className="text-2xl font-bold"
-                  whileHover={{ scale: 1.05 }}
+  const [activeSection, setActiveSection] = useState("home")
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const containerRef = useRef(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [cursorVariant, setCursorVariant] = useState("default")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Cursor variants
+  const cursorVariants = {
+    default: {
+      height: 32,
+      width: 32,
+      backgroundColor: "rgba(59, 130, 246, 0.5)",
+      x: mousePosition.x - 16,
+      y: mousePosition.y - 16,
+      mixBlendMode: "screen",
+    },
+    hover: {
+      height: 64,
+      width: 64,
+      backgroundColor: "rgba(59, 130, 246, 0.8)",
+      x: mousePosition.x - 32,
+      y: mousePosition.y - 32,
+    },
+  }
+
+  // Mouse movement effect
+  useEffect(() => {
+    const handleMouseMove = throttle((e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }, 16)
+
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+
+  // Profile image
+  const profileImage = "/placeholder.svg?height=450&width=450"
+
+  return (
+    <ParallaxProvider>
+      <div className="min-h-screen bg-gray-900 text-white relative">
+        {/* Navbar */}
+        <nav className="fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-white/10">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-16">
+              <motion.a href="#" className="text-2xl font-bold" whileHover={{ scale: 1.05 }}>
+                Gaurav<span className="text-blue-500">.dev</span>
+              </motion.a>
+
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex space-x-8">
+                {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
+                  <motion.a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    className="hover:text-blue-500 transition-colors"
+                    whileHover={{ y: -2 }}
+                  >
+                    {item}
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Mobile Menu Button */}
+              <button className="md:hidden text-white p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  Gaurav<span className="text-blue-500">.dev</span>
-                </motion.a>
-                
-                <div className="hidden md:flex space-x-8">
-                  {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
-                    <motion.a
-                      key={item}
-                      href={`#${item.toLowerCase()}`}
-                      className="hover:text-blue-500 transition-colors"
-                      whileHover={{ y: -2 }}
-                    >
-                      {item}
-                    </motion.a>
-                  ))}
-                </div>
-  
-                <div className="flex space-x-4">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                  />
+                </svg>
+              </button>
+
+              {/* Social Icons */}
+              <div className="hidden md:flex space-x-4">
+                {[
+                  { icon: FaGithub, link: "https://github.com/Gaurav-Mohadikar" },
+                  { icon: FaLinkedin, link: "https://www.linkedin.com/in/gaurav-mohadikar-1256a3287/" },
+                ].map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -2 }}
+                    className="text-gray-400 hover:text-blue-500"
+                  >
+                    <social.icon className="text-xl" />
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-gray-900/95 backdrop-blur-lg border-b border-white/10"
+            >
+              <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                {["Home", "About", "Skills", "Projects", "Contact"].map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    className="hover:text-blue-500 transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item}
+                  </a>
+                ))}
+                <div className="flex space-x-4 pt-2">
                   {[
                     { icon: FaGithub, link: "https://github.com/Gaurav-Mohadikar" },
                     { icon: FaLinkedin, link: "https://www.linkedin.com/in/gaurav-mohadikar-1256a3287/" },
                   ].map((social, index) => (
-                    <motion.a
+                    <a
                       key={index}
                       href={social.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      whileHover={{ y: -2 }}
                       className="text-gray-400 hover:text-blue-500"
                     >
                       <social.icon className="text-xl" />
-                    </motion.a>
+                    </a>
                   ))}
                 </div>
               </div>
-            </div>
-          </nav>
-  
-          {/* Hero Section */}
-          <section id="home" className="pt-32 pb-20 relative min-h-screen flex items-center">
-            <BackgroundParticles count={15} />
-            <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                    Hi, I'm <span className="text-blue-500">Gaurav</span>
-                  </h1>
-                  <h2 className="text-2xl md:text-4xl text-gray-400 mb-8">
-                    MERN / Full Stack Developer
-                  </h2>
-                  <p className="text-xl text-gray-400 mb-8">
-                    I build exceptional digital experiences that make life easier and more enjoyable."Designing seamless user experiences with powerful backend solutions for scalable, high-performance web applications."
-                  </p>
-                  <div className="flex gap-4">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg
-                               font-semibold hover:shadow-lg hover:shadow-blue-500/25"
-                    >
-                      View Projects
-                    </motion.button>
-                    {/* <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-8 py-4 border border-blue-500 rounded-lg font-semibold
-                               hover:bg-blue-500/10"
-                    >
-                      Contact Me
-                    </motion.button> */}
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="relative"
-                >
-                  <div className="relative w-[450px] aspect-square">
-                    <img
-                      src={profile}
-                      alt="Gaurav Mohadikar"
-                      className="rounded-full w-[450px] h-[450px] object-cover border-4 border-blue-500"
-                    />
-                    <div className="absolute -inset-4 rounded-full border border-blue-500/50 animate-spin-slow" />
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </section>
+            </motion.div>
+          )}
+        </nav>
 
-                  {/* About Section */}
+        {/* Hero Section */}
+        <section id="home" className="pt-32 pb-20 relative min-h-screen flex items-center">
+          <BackgroundParticles count={10} />
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:grid md:grid-cols-2 gap-12 items-center">
+              {/* Profile Image - Now first on mobile */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="relative flex justify-center md:justify-start order-1 md:order-2"
+              >
+                <div className="relative w-[280px] md:w-[350px] lg:w-[450px] aspect-square">
+                  <img
+                    src={profile}
+                    alt="Gaurav Mohadikar"
+                    className="rounded-full w-full h-full object-cover border-4 border-blue-500"
+                  />
+                  <div className="absolute -inset-4 rounded-full border border-blue-500/50 animate-spin-slow" />
+                </div>
+              </motion.div>
+
+              {/* Text Content - Now second on mobile */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-center md:text-left order-2 md:order-1"
+              >
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+                  Hi, I'm <span className="text-blue-500">Gaurav</span>
+                </h1>
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-400 mb-8">
+                  MERN / Full Stack Developer
+                </h2>
+                <p className="text-lg md:text-xl text-gray-400 mb-8">
+                  I build exceptional digital experiences that make life easier and more enjoyable. Designing seamless
+                  user experiences with powerful backend solutions for scalable, high-performance web applications.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                  <motion.a
+                    href="#projects"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg
+                             font-semibold hover:shadow-lg hover:shadow-blue-500/25 text-center"
+                  >
+                    View Projects
+                  </motion.a>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section */}
         <section id="about" className="py-20 relative">
           <BackgroundParticles count={8} />
           <div className="container mx-auto px-4">
@@ -290,7 +364,7 @@ const Portfolio = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-6xl font-bold text-center mb-20"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20"
               >
                 About <span className="text-blue-500">Me</span>
               </motion.h2>
@@ -303,13 +377,13 @@ const Portfolio = () => {
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-                <h3 className="text-3xl font-bold">
-                "A passionate MERN / Full Stack Developer based in Nagpur, India."
-                </h3>
+                <h3 className="text-3xl font-bold">A passionate MERN / Full Stack Developer based in Nagpur, India.</h3>
                 <p className="text-gray-400">
-                "With over a year of experience in web development, I specialize in building scalable and efficient applications using modern technologies. Driven by a passion for coding, I create intuitive and high-performance digital solutions."
+                  With over a year of experience in web development, I specialize in building scalable and efficient
+                  applications using modern technologies. Driven by a passion for coding, I create intuitive and
+                  high-performance digital solutions.
                 </p>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
                     <FaCode className="text-blue-500" />
                     <span>1+ Years Experience</span>
@@ -333,7 +407,7 @@ const Portfolio = () => {
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="grid grid-cols-2 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6"
               >
                 {[
                   { number: "1+", label: "Years of experience" },
@@ -365,18 +439,18 @@ const Portfolio = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-6xl font-bold text-center mb-20"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20"
               >
                 My <span className="text-blue-500">Skills</span>
               </motion.h2>
             </Parallax>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
                   title: "Frontend Development",
                   icon: <FaReact className="text-4xl text-blue-500" />,
-                  skills: ["React.js",  "JavaScript", "Tailwind CSS", "Redux"],
+                  skills: ["React.js", "JavaScript", "Tailwind CSS", "Redux"],
                 },
                 {
                   title: "Backend Development",
@@ -436,7 +510,7 @@ const Portfolio = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-6xl font-bold text-center mb-20"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20"
               >
                 My <span className="text-blue-500">Education</span>
               </motion.h2>
@@ -445,16 +519,12 @@ const Portfolio = () => {
             <div className="space-y-12">
               {[
                 {
-                  title: "Bachelor`s of Commerce in  Computer Applications",
+                  title: "Bachelor`s of Commerce in Computer Applications",
                   year: "2020 - 2023",
                   institution: "Kamla Nehru Mahavidyalaya, Sakkardara, Nagpur ",
                   description: "Specialized in Advanced Software Development and System Design",
                   icon: <FaUniversity className="text-2xl text-blue-500" />,
-                  achievements: [
-                   "Excelled in business and IT projects.",
-                  
-                    "Led college technical team",
-                  ],
+                  achievements: ["Excelled in business and IT projects.", "Led college technical team"],
                 },
                 {
                   title: "Commerce",
@@ -462,11 +532,7 @@ const Portfolio = () => {
                   institution: "Shri Ram Swami jr. Collage",
                   description: "Passionate commerce student exploring finance, business, and market strategies.",
                   icon: <FaGraduationCap className="text-2xl text-blue-500" />,
-                  achievements: [
-                    "Active member of commerce club.",
-                   "Excelled in accounting and finance.",
-                    
-                  ],
+                  achievements: ["Active member of commerce club.", "Excelled in accounting and finance."],
                 },
               ].map((education, index) => (
                 <TimelineItem key={index} data={education} index={index} />
@@ -475,8 +541,8 @@ const Portfolio = () => {
           </div>
         </section>
 
-                {/* Projects Section */}
-                <section id="projects" className="py-20 relative">
+        {/* Projects Section */}
+        <section id="projects" className="py-20 relative">
           <BackgroundParticles count={10} />
           <div className="container mx-auto px-4">
             <Parallax speed={-10}>
@@ -484,35 +550,92 @@ const Portfolio = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-6xl font-bold text-center mb-20"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20"
               >
                 My <span className="text-blue-500">Projects</span>
               </motion.h2>
             </Parallax>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "E-Commerce Platform",
-                  description: "Full-stack e-commerce solution with React, Node.js, and MongoDB",
-                  image: "/projects/ecommerce.jpg",
+                  title: "Portfolio",
+                  description: "Passionate and skilled developer crafting innovative, user-friendly, and efficient digital experiences.",
+                  image: port,
                   tech: ["React", "Node.js", "MongoDB", "Redux"],
                   link: "https://github.com/project1",
                 },
                 {
-                  title: "AI Chat Application",
-                  description: "Real-time chat app with AI integration using OpenAI's GPT-3",
-                  image: "/projects/chat.jpg",
-                  tech: ["Next.js", "OpenAI", "WebSocket", "Tailwind"],
-                  link: "https://github.com/project2",
+                  title: "Ashish Mobile Shop",
+                  description: "Discover the latest smartphones, accessories, and top deals at our mobile shop.",
+                  image: mobile,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://ashishmobile.in/",
                 },
                 {
-                  title: "Cloud Management Dashboard",
-                  description: "AWS cloud resource management dashboard with real-time monitoring",
-                  image: "/projects/dashboard.jpg",
-                  tech: ["React", "AWS", "GraphQL", "TypeScript"],
-                  link: "https://github.com/project3",
+                  title: "Beacon Academy",
+                  description: "Empowering learners with quality courses, expert guidance, and interactive resources.",
+                  image: beacon,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://beaconacademynagpur.in/",
                 },
+                {
+                  title: "Cheap-Book Depot",
+                  description: "Explore bestsellers, academic texts, and rare finds at unbeatable prices!",
+                  image: cheap,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://cheapbookdepot.com/",
+                },
+                {
+                  title: "Durgesh Furniture",
+                  description: "Explore our collection of modern, classic, and custom designs to elevate your home or office!",
+                  image: durgesh,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://durgeshfurniture.in/",
+                },
+                // {
+                //   title: "Fortune Mall",
+                //   description: "Experience the ultimate shopping, dining, and entertainment destination at Fortune Mall. ",
+                //   image: fortune,
+                //   tech: ["React", "Node.js", "MongoDB", "Redux"],
+                //   link: "https://fortunemallnagpur.in/",
+                // },
+                {
+                  title: "Madhuprem Caterers",
+                  description: "Delicious cuisine, exceptional service! We cater for all events, from weddings to corporate gatherings",
+                  image: madhuprem,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://madhupremcaterers.in/",
+                },
+                {
+                  title: "Om Sai Battery",
+                  description: "Power up with high-quality batteries for all your needs! From cars to electronics",
+                  image: omsai,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://omsaibattery.in/",
+                },
+                {
+                  title: "Shinde Education",
+                  description: "Unlock knowledge and skills with our expert-led courses and resources. Empowering learners for a brighter future!",
+                  image: shinde,
+                  tech: ["React", "Node.js", "MongoDB", "Redux"],
+                  link: "https://shindeseducationgallery.com/",
+                },
+                {
+                  title: "Shiv Shakti Travel",
+                  description: "Explore the world with seamless travel experiences! Discover amazing destinations, exclusive deals, and unforgettable adventures.",
+                  image: shiv,
+                  tech: ["Next.js", "OpenAI", "WebSocket", "Tailwind"],
+                  link: "https://shivshaktitravelsnagpur.com/",
+                },
+                // {
+                //   title: "SS Computer",
+                //   description: "Your one-stop shop for the latest computers, laptops, and accessories. Get top brands, great deals, and expert support!",
+                //   image: ss,
+                //   tech: ["React", "AWS", "GraphQL", "TypeScript"],
+                //   link: "https://sscomputernagpur.in/",
+                // },
+               
               ].map((project, index) => (
                 <motion.div
                   key={index}
@@ -523,9 +646,9 @@ const Portfolio = () => {
                   className="bg-white/5 rounded-2xl overflow-hidden backdrop-blur-lg border 
                            border-white/10 hover:border-blue-500/50 transition-all"
                 >
-                  <div className="relative aspect-video">
+                  <div className="relative aspect-video bg-gray-800">
                     <img
-                      src={project.image}
+                      src={project.image || "/placeholder.svg"}
                       alt={project.title}
                       className="w-full h-full object-cover"
                     />
@@ -536,10 +659,7 @@ const Portfolio = () => {
                     <p className="text-gray-400 mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tech.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-3 py-1 bg-blue-500/20 rounded-full text-blue-500 text-sm"
-                        >
+                        <span key={techIndex} className="px-3 py-1 bg-blue-500/20 rounded-full text-blue-500 text-sm">
                           {tech}
                         </span>
                       ))}
@@ -570,28 +690,29 @@ const Portfolio = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-6xl font-bold text-center mb-20"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-20"
               >
                 Get In <span className="text-blue-500">Touch</span>
               </motion.h2>
             </Parallax>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-                <h3 className="text-3xl font-bold">"Let’s Connect and Innovate Together!"</h3>
+                <h3 className="text-3xl font-bold">Let's Connect and Innovate Together!</h3>
                 <p className="text-gray-400">
-                  I'm always open to discussing new projects, creative ideas or opportunities to
-                  be part of your visions."Looking for a skilled developer to bring your vision to life? Whether it’s a web app, a business solution, or a new venture, I’m here to help. Let’s connect!"
+                  I'm always open to discussing new projects, creative ideas or opportunities to be part of your
+                  visions. Looking for a skilled developer to bring your vision to life? Whether it's a web app, a
+                  business solution, or a new venture, I'm here to help. Let's connect!
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
                     <FaEnvelope className="text-2xl text-blue-500" />
-                    <a href="mailto:contact@example.com" className="text-gray-400 hover:text-blue-500">
+                    <a href="mailto:gauravmohadikar12@gmail.com" className="text-gray-400 hover:text-blue-500">
                       gauravmohadikar12@gmail.com
                     </a>
                   </div>
@@ -668,14 +789,12 @@ const Portfolio = () => {
         <footer className="py-8 border-t border-white/10">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-400">
-                © 2025 Gaurav.dev.
-              </p>
+              <p className="text-gray-400 text-center md:text-left">© 2025 Gaurav.dev.</p>
               <div className="flex space-x-4 mt-4 md:mt-0">
                 {[
                   { icon: FaGithub, link: "https://github.com/Gaurav-Mohadikar" },
                   { icon: FaLinkedin, link: "https://www.linkedin.com/in/gaurav-mohadikar-1256a3287/" },
-                  { icon: FaEnvelope, link: "gauravmohadikar12@gmail.com" },
+                  { icon: FaEnvelope, link: "mailto:gauravmohadikar12@gmail.com" },
                 ].map((social, index) => (
                   <motion.a
                     key={index}
@@ -695,7 +814,7 @@ const Portfolio = () => {
 
         {/* Custom Cursor */}
         <motion.div
-          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50"
+          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 hidden md:block"
           variants={cursorVariants}
           animate={cursorVariant}
         />
@@ -705,3 +824,4 @@ const Portfolio = () => {
 }
 
 export default Portfolio
+
