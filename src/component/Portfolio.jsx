@@ -27,7 +27,7 @@ import cheap from '/src/assets/img/cheap-book.png'
 import durgesh from '/src/assets/img/durgesh-furniture.png'
 
 import madhuprem from '/src/assets/img/madhuprem.png'
-import omsai from "/src/assets/img/om-sai.png"; // Try this
+// import omsai from "/src/assets/img/om-sai.png"; // Try this
 
 import shinde from '/src/assets/img/shinde.png'
 import shiv from '/src/assets/img/shiv-shakti.png'
@@ -836,13 +836,13 @@ const Portfolio = () => {
                   tech: ["JavaScript", "HTML", "CSS", "Bootstrap"],
                   link: "https://madhupremcaterers.in/",
                 },
-                {
-                  title: "Om Sai Battery",
-                  description: "Power up with high-quality batteries for all your needs! From cars to electronics",
-                  image: omsai,
-                  tech: ["JavaScript", "HTML", "CSS", "Bootstrap"],
-                  link: "https://omsaibattery.in/",
-                },
+                // {
+                //   title: "Om Sai Battery",
+                //   description: "Power up with high-quality batteries for all your needs! From cars to electronics",
+                //   image: omsai,
+                //   tech: ["JavaScript", "HTML", "CSS", "Bootstrap"],
+                //   link: "https://omsaibattery.in/",
+                // },
                 {
                   title: "Shinde Education",
                   description: "Unlock knowledge and skills with our expert-led courses and resources. Empowering learners for a brighter future!",
