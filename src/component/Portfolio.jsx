@@ -27,7 +27,8 @@ import cheap from '../assets/img/cheap-book.png'
 import durgesh from '../assets/img/durgesh-furniture.png'
 import fortune from '../assets/img/fortune.png'
 import madhuprem from '../assets/img/madhuprem.png'
-import omsai from '../assets/img/om-sai.png'
+import omsai from "/src/assets/img/om-sai.png"; // Try this
+
 import shinde from '../assets/img/shinde.png'
 import shiv from '../assets/img/shiv-shakti.png'
 import ss from '../assets/img/ss-computer.png'
