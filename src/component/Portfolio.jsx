@@ -21,20 +21,20 @@ import {
 
 import profile from '../assets/gaurav.jpg'
 // import profile from '../assets/img/Gaurav.png'
-import beacon from "@/assets/img/beacon-Academy.png";
-import mobile from "@/assets/img/ashish-mobile.png";
-import cheap from "@/assets/img/cheap-book.png";
-import durgesh from "@/assets/img/durgesh-furniture.png";
-import fortune from "@/assets/img/fortune.png";
-import madhuprem from "@/assets/img/madhuprem.png";
-import omsai from "@/assets/img/om-sai.png"; // No need for "/src/"
-import shinde from "@/assets/img/shinde.png";
-import shiv from "@/assets/img/shiv-shakti.png";
-import ss from "@/assets/img/ss-computer.png";
-import port from "@/assets/img/port.png";
-import attendance from "@/assets/img/attendance.png";
-import cars from "@/assets/img/car.jpg";
+import beacon from '/src/assets/img/beacon-Academy.png'
+import mobile from '/src/assets/img/ashish-mobile.png'
+import cheap from '/src/assets/img/cheap-book.png'
+import durgesh from '/src/assets/img/durgesh-furniture.png'
 
+import madhuprem from '/src/assets/img/madhuprem.png'
+import omsai from "/src/assets/img/om-sai.png"; // Try this
+
+import shinde from '/src/assets/img/shinde.png'
+import shiv from '/src/assets/img/shiv-shakti.png'
+
+import port from '/src/assets/img/port.png'
+import attendance from '/src/assets/img/attendance.png'
+import cars from '/src/assets/img/car.jpg'
 
 
 
