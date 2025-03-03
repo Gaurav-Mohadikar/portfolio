@@ -34,7 +34,7 @@ import shiv from '/src/assets/img/shiv-shakti.png'
 
 import port from '/src/assets/img/port.png'
 import attendance from '/src/assets/img/attendance.png'
-import cars from '/src/assets/img/car.jpg'
+import cars from '/src/assets/img/cars.png'
 
 
 
@@ -778,14 +778,14 @@ const Portfolio = () => {
                   description: "Passionate developer building responsive, user-friendly, and innovative web solutions.",
                   image: port,
                   tech: ["React.js", "HTML", "Tailwind CSS"],
-                  link: "https://github.com/project1",
+                  link: "https://gaurav-sigma.vercel.app/",
                 },
                 {
                   title: "Cars Nagpur",
                   description: "Discover the latest cars, accessories, and top deals at our car shop.",
                   image: cars,
                   tech: ["MongoDB", "Express.js", "React.js", "Node.js"],
-                  link: "https://carsnagpur.com/",
+                  link: "http://15.207.18.250/",
                 },
                 {
                   title: "Attendance System",
