@@ -312,7 +312,7 @@ const Portfolio = () => {
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="relative flex justify-center md:justify-start order-1 md:order-2 ml-[70px] "
+                className="relative flex justify-center md:justify-start order-1 md:order-2 md:ml-[70px] "
               >
                 <div className="relative w-[280px] md:w-[350px] lg:w-[450px] aspect-square">
                   <img
