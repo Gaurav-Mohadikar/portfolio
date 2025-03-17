@@ -799,7 +799,7 @@ const Portfolio = () => {
                   description: "Efficiently manage and track employee attendance with our user-friendly system.",
                   image: attendance,
                   tech: ["MongoDB", "Express.js", "React.js", "Node.js"],
-                  link: "https://attendance.com/",
+                  link: "https://pipes-seven-delta.vercel.app/billing",
                 },
                 {
                   title: "Ashish Mobile Shop",
