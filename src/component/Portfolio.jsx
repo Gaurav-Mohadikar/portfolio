@@ -19,8 +19,8 @@ import {
   FaCertificate,
 } from "react-icons/fa"
 
-import profile from "../assets/gaurav.jpg"
-// import profile from '../assets/img/Gaurav.png'
+// import profile from "../assets/gaurav.jpg"
+import profile from '../assets/img/Gaurav.png'
 import beacon from "/src/assets/img/beacon-Academy.png"
 import mobile from "/src/assets/img/ashish-mobile.png"
 import cheap from "/src/assets/img/cheap-book.png"
@@ -1068,6 +1068,8 @@ const Portfolio = () => {
             </div>
           </div>
         </footer>
+
+        
 
         {/* Custom Cursor */}
         <motion.div
