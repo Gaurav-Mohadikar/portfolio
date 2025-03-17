@@ -780,13 +780,13 @@ const Portfolio = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                {
-                  title: "Portfolio",
-                  description: "Passionate developer building responsive, user-friendly, and innovative web solutions.",
-                  image: port,
-                  tech: ["React.js", "HTML", "Tailwind CSS"],
-                  link: "https://gaurav-sigma.vercel.app/",
-                },
+                // {
+                //   title: "Portfolio",
+                //   description: "Passionate developer building responsive, user-friendly, and innovative web solutions.",
+                //   image: port,
+                //   tech: ["React.js", "HTML", "Tailwind CSS"],
+                //   link: "https://gaurav-sigma.vercel.app/",
+                // },
                 {
                   title: "Cars Nagpur",
                   description: "Discover the latest cars, accessories, and top deals at our car shop.",
